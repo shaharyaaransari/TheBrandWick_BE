@@ -1,24 +1,27 @@
 const express = require("express");
-const {  mongoose } = require("mongoose");
-   const app = express();
-   require("dotenv").config()
-      app.use(express.json())
-    app.get("/",(req,res)=>{
-            res.send("welcome")
-    })
+const { mongoose } = require("mongoose");
+const userRouter = require("./routes/UserRouter");
+const app = express();
+require("dotenv").config()
+app.use(express.json())
 
-  const connections = async()=>{
+app.use("/user",userRouter)
+app.get("/", (req, res) => {
+        res.send("welcome")
+})
+
+const connections = async () => {
         try {
-                   await mongoose.connect(process.env.MONGO_URL)
-                     console.log("connected!..")
+                await mongoose.connect(process.env.MONGO_URL)
+                console.log("connected!..")
         } catch (error) {
-                  console.log(error)
+                console.log(error)
         }
-  }
+}
 
-   app.listen(8080,()=>{
-   connections()
-    console.log("server runnig..")
+app.listen(8080, () => {
+        connections()
+        console.log("server runnig..")
 })
 
 
