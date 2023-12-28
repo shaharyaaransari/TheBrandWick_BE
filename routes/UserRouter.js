@@ -11,10 +11,10 @@ userRouter.post("/signup", async (req, res) => {
         const existingUser = await UserModel.findOne({ email })
         const RegrexPass = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/
         if (!RegrexPass.test(password)) {
-            return res.status(400).send({ msg: "please choose another password" })
+            return res.status(201).send({ msg: "please choose another password" })
         }
         if (existingUser) {
-            return res.status(400).send({ msg: "User already exist" })
+            return res.status(201).send({ msg: "User already exist" })
         }
         bcrypt.hash(password, 8, async (err, hash) => {
             if (err) {
@@ -39,7 +39,7 @@ userRouter.post("/login", async (req, res) => {
                     const token = jwt.sign({ userId: user._id, username: user.name }, "gullu", { expiresIn: "7d" })
                     res.status(200).send({ msg: "Login successfully!!", token: token })
                 } else {
-                    res.status(400).send({ msg: "wrong credentails!!" })
+                    res.status(201).send({ msg: "wrong credentails!!" })
                 }
             })
         } else {
